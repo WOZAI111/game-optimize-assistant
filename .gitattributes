@@ -1,0 +1,13 @@
+# 默认按文本处理，仓库里统一用 LF 存储
+* text=auto eol=lf
+
+# Windows 上必须/更适合 CRLF 的
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 二进制
+*.zip binary
+*.png binary
+*.jpg binary
+*.ico binary

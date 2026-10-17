@@ -1,0 +1,20 @@
+# 构建产物：每次运行 work\build.ps1 都会重新生成，不进版本库
+outputs/
+
+# 本地测试残留（安全夹具和端到端测试会往这里写东西）
+work/probe/
+work/test/
+work/test-bat/
+work/test-mon/
+work/test-out/
+work/e2e/
+work/e2e-check/
+work/final-gate/
+work/_writetest.txt
+
+# 编辑器与系统垃圾
+Thumbs.db
+desktop.ini
+.vscode/
+*.swp
+*.bak

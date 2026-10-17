@@ -1,0 +1,33 @@
+name: build-release
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Build the package
+        shell: powershell
+        run: .\work\build.ps1
+
+      - name: Show what was produced
+        shell: powershell
+        run: Get-ChildItem -Recurse outputs | Select-Object FullName, Length
+
+      - name: Attach the package to the release
+        if: startsWith(github.ref, refs/tags/v)
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $zips = @(Get-ChildItem -Path outputs -Filter *.zip)
+          if ($zips.Count -eq 0) { throw 'no zip produced' }
+          Write-Host ("uploading " + $zips[0].FullName)
+          gh release create $env:GITHUB_REF_NAME --title $env:GITHUB_REF_NAME --generate-notes $zips[0].FullName
