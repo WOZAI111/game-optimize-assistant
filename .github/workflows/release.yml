@@ -29,5 +29,10 @@ jobs:
         run: |
           $zips = @(Get-ChildItem -Path outputs -Filter *.zip)
           if ($zips.Count -eq 0) { throw 'no zip produced' }
+          $existing = gh release view $env:GITHUB_REF_NAME 2>$null
+          if ($LASTEXITCODE -eq 0) {
+            Write-Host 'release already exists - nothing to do'
+            exit 0
+          }
           Write-Host ("uploading " + $zips[0].FullName)
           gh release create $env:GITHUB_REF_NAME --title $env:GITHUB_REF_NAME --generate-notes $zips[0].FullName
